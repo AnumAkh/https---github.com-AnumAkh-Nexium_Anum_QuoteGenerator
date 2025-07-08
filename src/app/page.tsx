@@ -40,10 +40,10 @@ export default function QuotePage() {
         <div className="space-y-3">
           {quotes.length > 0 ? (
             quotes.map((q, i) => (
-              <div key={i} className="p-4 bg-gray-100 rounded shadow">{q.text}</div>
+              <div key={i} className="p-4 bg-blue-800 rounded shadow">{q.text}</div>
             ))
           ) : (
-            <p className="text-sm text-gray-500 text-center">Quotes will appear here...</p>
+            <p className="text-sm text-center">Quotes will appear here...</p>
           )}
         </div>
       </div>
