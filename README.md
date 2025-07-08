@@ -9,7 +9,9 @@ When you type in a Topic in the Input box, it searches for quotes related to tha
 ## Technology Used
 
 Next.js
+
 Shadcn (UI components like button and input form)
+
 TailwindCSS
 
 ## Deployment
