@@ -1,35 +1,52 @@
 'use client'
+
+import { useState } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useState } from 'react'
 
-export default function Home() {
+type Quote = {
+  text: string
+  topic: string
+}
 
-  const [topic, setTopic] = useState("")
+export default function QuotePage() {
+  const [topic, setTopic] = useState('')
+  const [quotes, setQuotes] = useState<Quote[]>([])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Submitted topic:", topic)
-    // You can filter quotes or do anything here
+    const res = await fetch(`/api/quotes?topic=${topic}`)
+    const data = await res.json()
+    setQuotes(data.quotes)
   }
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto mt-10">
-          <h2 className="text-xl font-semibold">Enter a topic</h2>
+    <main className="h-screen flex justify-center items-center px-4">
+      <div className="w-full max-w-xl space-y-6">
+        <h1 className="text-4xl font-bold text-center">Quote Generator</h1>
 
+        <form onSubmit={handleSubmit} className="space-y-4">
           <Input
-            type="text"
-            placeholder="e.g. love, motivation, life"
+            placeholder="Enter topic (e.g., motivation)"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             required
           />
-
-          <Button type="submit">Generate Quotes</Button>
+          <div className="flex justify-center">
+            <Button type="submit">Generate</Button>
+          </div>
         </form>
-      </main>
-    </div>
-  );
+
+        <div className="space-y-3">
+          {quotes.length > 0 ? (
+            quotes.map((q, i) => (
+              <div key={i} className="p-4 bg-gray-100 rounded shadow">{q.text}</div>
+            ))
+          ) : (
+            <p className="text-sm text-gray-500 text-center">Quotes will appear here...</p>
+          )}
+        </div>
+      </div>
+    </main>
+  )
 }
